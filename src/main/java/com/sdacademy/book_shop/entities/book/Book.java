@@ -1,13 +1,11 @@
-package com.sdacademy.book_shop.entities;
+package com.sdacademy.book_shop.entities.book;
 
+import com.sdacademy.book_shop.entities.Author;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import static javax.persistence.GenerationType.AUTO;
 import static lombok.AccessLevel.PRIVATE;
@@ -19,14 +17,16 @@ import static lombok.AccessLevel.PRIVATE;
 public class Book {
     @Id
     @GeneratedValue(strategy = AUTO)
-    int id;
-    @Column
+    Long id;
+    BookCategory bookCategory;
     String title;
-    @Column
-    String author;
-    @Column
+    @ManyToOne
+    Author author;
     String ISBN;
-    @Column
     int pagesNum;
+    int price;
+    private String description;
+    private String thumbnail;
+    private int quantity;
 
 }

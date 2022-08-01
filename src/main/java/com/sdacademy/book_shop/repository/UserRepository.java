@@ -1,24 +1,18 @@
 package com.sdacademy.book_shop.repository;
 
-import com.sdacademy.book_shop.entities.Book;
-import com.sdacademy.book_shop.entities.User;
-import org.springframework.data.repository.CrudRepository;
 
+import com.sdacademy.book_shop.entities.user.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    void create(User user);
+    List<User> findAll();
 
-    void delete(User user);
+    Optional<User> findByNameIgnoreCase(String name);
 
-    void update(User user);
+    User findByEmailIgnoreCase(String email);
 
-    Optional<User> findByName(String username);
-
-    Optional<List<User>> findAll ();
-
-    boolean existsByUsername(final String username);
 
 }

@@ -1,26 +1,24 @@
 package com.sdacademy.book_shop.dto;
 
-import com.sdacademy.book_shop.enums.UserRol;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import com.sdacademy.book_shop.entities.cartNoder.Orders;
+import com.sdacademy.book_shop.entities.user.Address;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import java.util.List;
 
-import static lombok.AccessLevel.PRIVATE;
-
-@Data
-@FieldDefaults(level = PRIVATE)
+@Getter
+@Setter
 public class UserDto {
-    int id;
-    @NotBlank(message = "Username must be provided")
-    String username;
-    @NotNull(message = "Age must be provided")
-    @Positive(message = "Age must be positive")
-    int age;
-    @NotBlank(message = "City must be provided")
-    String city;
-    @NotBlank(message = "User rol must be provided")
-    UserRol rol;
+
+    private Long id;
+    private String name;
+    private String email;
+    private List<Orders> orderList;
+    private String password;
+    private List<Address> addressList;
+    private String thumbnail;
+    private String roles;
+
+
 }
