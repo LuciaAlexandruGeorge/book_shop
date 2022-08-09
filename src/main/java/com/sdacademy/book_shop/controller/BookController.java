@@ -1,6 +1,7 @@
 package com.sdacademy.book_shop.controller;
 
 import com.sdacademy.book_shop.dto.BookDto;
+import com.sdacademy.book_shop.entities.book.BookCategory;
 import com.sdacademy.book_shop.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class BookController {
     }
 
     @GetMapping("/books/edit/{bookId}")
-    public String showEditForm(@PathVariable("bookId") int id, Model model) {//Model e modelul din Spring MVC
+    public String showEditForm(@PathVariable("bookId") long id, Model model) {//Model e modelul din Spring MVC
         BookDto bookForm = bookService.findById(id);
         model.addAttribute("bookForm", bookForm);
         return "book_create";
@@ -51,8 +52,8 @@ public class BookController {
         return "redirect:/books";
     }
 
-
-    public List<BookDto> getByBookCategory
+    @GetMapping(path = "/books/category/{category}")
+    public List<BookDto> getByBookCategory(@PathVariable BookCategory category){return bookService.getAllByCategory(category);}
 
     @GetMapping(path = "/books/title/{title}")
     public List<BookDto> getByTitleIgnoreCase(@PathVariable String title){return bookService.getByTitleIgnoreCase(title);}

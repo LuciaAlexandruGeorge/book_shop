@@ -28,6 +28,9 @@ public class BookMapper implements Mapper<Book, BookDto> {
     @Override
     public Book convertToEntity(BookDto dto) {
         Book result = new Book();
+        if (dto.getId()!=null){
+            result = bookRepository.findById(dto.getId()).orElse(result);
+        }
         if (dto.getAuthorId() !=null){
             Author author = authorRepository.findById(dto.getAuthorId()).orElse(new Author());
             result.setAuthor(author);

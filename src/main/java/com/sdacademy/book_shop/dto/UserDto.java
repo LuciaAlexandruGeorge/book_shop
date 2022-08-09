@@ -1,24 +1,25 @@
 package com.sdacademy.book_shop.dto;
 
-import com.sdacademy.book_shop.entities.cartNoder.Orders;
-import com.sdacademy.book_shop.entities.user.Address;
+import com.sdacademy.book_shop.entities.cartNoder.Order;
 import lombok.Getter;
 import lombok.Setter;
-
+import lombok.experimental.FieldDefaults;
 import java.util.List;
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @Setter
+@FieldDefaults(level = PRIVATE)
 public class UserDto {
 
-    private Long id;
-    private String name;
-    private String email;
-    private List<Orders> orderList;
-    private String password;
-    private List<Address> addressList;
-    private String thumbnail;
-    private String roles;
+     Long id;
+     String name;
+     String email;
+     List<Order> orderList;
+     String password;
+     String address;
+     String thumbnail;
+     String roles;
 
 
 }

@@ -22,7 +22,7 @@ public class OrderLineService {
     }
 
     // create
-    public void save(OrderLine orderLine) {
+    public void save(OrderLineDto orderLine) {
         log.info("saving orderline {}", orderLine.getId());
         orderLineRepository.save(orderLine);
     }
@@ -50,7 +50,7 @@ public class OrderLineService {
                 .orElseThrow(() -> new RuntimeException("OrderLine not found"));
     }
 
-    private OrderLine updateEntity(OrderLineRequest orderLineData, OrderLine existingOrderLine) {
+    private OrderLine updateEntity(OrderLineDto orderLineData, OrderLine existingOrderLine) {
         existingOrderLine.setBook(orderLineData.getBook());
         existingOrderLine.setQuantity(orderLineData.getQuantity());
         return existingOrderLine;

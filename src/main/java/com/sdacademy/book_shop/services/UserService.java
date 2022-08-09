@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService {
         existingUser.setOrderList(userDto.getOrderList());
         existingUser.setEmail(userDto.getEmail());
         existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        existingUser.setAddressList(userDto.getAddressList());
+        existingUser.setAddress(userDto.getAddress());
         existingUser.setRoles(userDto.getRoles());
         existingUser.setThumbnail(userDto.getThumbnail());
         return existingUser;

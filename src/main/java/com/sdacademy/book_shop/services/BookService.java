@@ -1,8 +1,10 @@
 package com.sdacademy.book_shop.services;
 
 import com.sdacademy.book_shop.dto.BookDto;
+import com.sdacademy.book_shop.dto.UserDto;
 import com.sdacademy.book_shop.entities.book.Book;
 import com.sdacademy.book_shop.entities.book.BookCategory;
+import com.sdacademy.book_shop.entities.user.User;
 import com.sdacademy.book_shop.exceptions.EntityNotFoundError;
 import com.sdacademy.book_shop.exceptions.SdException;
 import com.sdacademy.book_shop.repository.BookRepository;
@@ -10,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,6 +24,8 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class BookService {
+
+    static final Logger log = LoggerFactory.getLogger(BookService.class);
     BookRepository bookRepository;
     ModelMapper modelMapper;
     BookMapper bookMapper;
@@ -56,8 +60,18 @@ public class BookService {
         return bookMapper.convertToDto(book);
     }
 
+    public void update(Long bookId, BookDto bookDto) {
+        log.info("update book {0}", bookDto);
+
+        bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        createBook(bookDto);
+    }
+
+
+
     public BookDto findById(long id) {
-        Book entityBook = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundError(String.format("Book with %s does not exist", id)));
+        Book entityBook = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundError(String.format("Book with %d does not exist", id)));
         return bookMapper.convertToDto(entityBook);
     }
 

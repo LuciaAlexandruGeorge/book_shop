@@ -24,7 +24,7 @@ public class Book {
     Author author;
     String ISBN;
     int pagesNum;
-    int price;
+    double price;
     private String description;
     private String thumbnail;
     private int quantity;

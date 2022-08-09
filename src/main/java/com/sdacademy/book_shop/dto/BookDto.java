@@ -15,7 +15,7 @@ public class BookDto {
     Long authorId;
     String ISBN;
     int pagesNum;
-    int price;
+    double price;
     String description;
     String thumbnail;
     int quantity;
