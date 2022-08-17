@@ -47,7 +47,7 @@ public class BookCategoryController {
 
     @GetMapping("/admin/book-categories")
     public String showProductCategoriesPage(Model model) {
-        // return a html page with products
+        // return a html page with books
         // add list of books
         List<BookCategory> bookCategories = bookCategoryService.findAll();
         model.addAttribute("bookCategoriesInView", bookCategories);
@@ -83,7 +83,7 @@ public class BookCategoryController {
     }
 
     public ModelAndView showEditForm2(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView("productCate-edit");
+        ModelAndView modelAndView = new ModelAndView("bookCate-edit");
         modelAndView.addObject("bookCategory", bookCategoryService.findById(id));
         return modelAndView;
     }
@@ -94,7 +94,7 @@ public class BookCategoryController {
             @ModelAttribute BookCategoryDto bookCategoryDto) {
 
         bookCategoryService.update(id, bookCategoryDto);
-        return "redirect:/admin/product-categories/";
+        return "redirect:/admin/book-categories/";
     }
 
     @GetMapping("/admin/book-categories/{id}/delete")
