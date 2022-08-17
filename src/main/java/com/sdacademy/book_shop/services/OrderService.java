@@ -35,29 +35,28 @@ public class OrderService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-   private OrderLineMapper orderLineMapper;
+    private OrderLineMapper orderLineMapper;
 
     private Map<Book, Integer> books = new HashMap<>();
 
 
+    public void addBook(Book book, int quantity) {
+        if (books.containsKey(book)) {
+            books.replace(book, book.get(book) + quantity);
+        } else {
+            books.put(book, quantity);
+        }
+    }
 
-//    public void addProduct(Book book, int quantity) {
-//        if (books.containsKey(book)) {
-//            books.replace(book, book.get(book) + quantity);
-//        } else {
-//            books.put(book, quantity);
-//        }
-//    }
-//
-//    public void removeProduct(Book book) {
-//        if (books.containsKey(book)) {
-//            if (books.get(book) > 1)
-//                books.replace(book, books.get(book) - 1);
-//            else if (books.get(book) == 1) {
-//                books.remove(book);
-//            }
-//        }
-//    }
+    public void removeBook(Book book) {
+        if (books.containsKey(book)) {
+            if (books.get(book) > 1)
+                books.replace(book, books.get(book) - 1);
+            else if (books.get(book) == 1) {
+                books.remove(book);
+            }
+        }
+    }
 
     ;
 
@@ -71,7 +70,7 @@ public class OrderService {
         Book book;
         for (Map.Entry<Book, Integer> entry : books.entrySet()) {
             Long productKey = entry.getKey().getId();
-            // Refresh quantity for every product before checking
+            // Refresh quantity for every book before checking
             book = bookRepository.findById(productKey).orElseThrow();
 
             if (book.getQuantity() < entry.getValue())
@@ -82,7 +81,7 @@ public class OrderService {
             bookRepository.save(entry.getKey());
         }
 
-//        productRepository.save(products.keySet());
+//        bookRepository.save(books.keySet());
         bookRepository.flush();
         books.clear();
     }
@@ -99,7 +98,7 @@ public class OrderService {
     // create
     public OrderDto save(OrderDto order) {
         log.info("saving order {}", order.getId());
-        Order orderEntity= orderMapper.convertToEntity(order);
+        Order orderEntity = orderMapper.convertToEntity(order);
         orderRepository.save(orderEntity);
         return orderMapper.convertToDto(orderEntity);
     }
@@ -107,13 +106,13 @@ public class OrderService {
     // find all
     public List<OrderDto> findAll() {
         log.info("finding all order");
-        return orderRepository.findAll().stream().map(o->orderMapper.convertToDto(o)).collect(Collectors.toList());
+        return orderRepository.findAll().stream().map(o -> orderMapper.convertToDto(o)).collect(Collectors.toList());
     }
 
     // find by id
     public OrderDto findById(Long id) {
         log.info("finding by id");
-        Order entity =  orderRepository.findById(id)
+        Order entity = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         return orderMapper.convertToDto(entity);
     }
@@ -121,8 +120,8 @@ public class OrderService {
     // update
     public void update(Long orderId, OrderDto orderDto) {
         log.info("update Order {}", orderDto.getEntries().toString());
-        Order order= orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
-        updateEntity(orderDto,order);
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        updateEntity(orderDto, order);
         orderRepository.save(order);
 
     }
@@ -131,15 +130,14 @@ public class OrderService {
         existingOrder.setTotalPrice(orderDto.getTotalPrice());
         existingOrder.setAddress(orderDto.getAddress());
         existingOrder.setOrderDate(orderDto.getOrderDate());
-        if (orderDto.getEntries()!=null) {
-            existingOrder.setEntries(orderDto.getEntries().stream().map(e->orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
+        if (orderDto.getEntries() != null) {
+            existingOrder.setEntries(orderDto.getEntries().stream().map(e -> orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
         }
-        if(orderDto.getUser()!=null){
+        if (orderDto.getUser() != null) {
             existingOrder.setUser(userMapper.convertToEntity(orderDto.getUser()));
         }
         existingOrder.setOrderStatus(orderDto.getOrderStatus());
     }
-
 
 
     // delete
