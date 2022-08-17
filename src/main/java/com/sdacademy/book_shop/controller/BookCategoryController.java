@@ -46,7 +46,7 @@ public class BookCategoryController {
 //    }
 
     @GetMapping("/admin/book-categories")
-    public String showProductCategoriesPage(Model model) {
+    public String showBookCategoriesPage(Model model) {
         // return a html page with books
         // add list of books
         List<BookCategory> bookCategories = bookCategoryService.findAll();
