@@ -11,10 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderLineService {
+    @Autowired
+    private OrderLineRepository orderLineRepository;
+    @Autowired
+    private OrderLineMapper orderLineMapper;
+
 
     private static final Logger log = LoggerFactory.getLogger(OrderLineService.class);
-
-    private final OrderLineRepository orderLineRepository;
 
     @Autowired
     public OrderLineService(OrderLineRepository orderLineRepository) {
@@ -22,16 +25,13 @@ public class OrderLineService {
     }
 
     // create
-    public void save(OrderLineDto orderLine) {
-        log.info("saving orderline {}", orderLine.getId());
-        orderLineRepository.save(orderLine);
+    public OrderLineDto save(OrderLineDto orderLine) {
+        log.info("saving order line {}", orderLine.getId());
+        OrderLine orderLineEntity= orderLineMapper.convertToEntity(orderLine);
+        orderLineRepository.save(orderLineEntity);
+        return orderLineMapper.convertToDto(orderLineEntity);
     }
 
-//    // find all
-//    public List<Product> findAll() {
-//        log.info("finding all orderline");
-//        return productRepository.findAll();
-//    }
 
     // find by id
     public OrderLine findById(Long id) {
@@ -41,33 +41,21 @@ public class OrderLineService {
     }
 
     // update
-    public void update(Long orderLineId, OrderLineDto orderLineDTO) {
-        log.info("update Orderline {}", orderLineDTO.getBook());
+    public void update(Long orderLineId, OrderLineDto orderLineDto) {
+        log.info("update Order line {}", orderLineDto.getBookDto());
 
         orderLineRepository.findById(orderLineId)
-                .map(existingOrderLine -> updateEntity(orderLineDTO, existingOrderLine))
+                .map(existingOrderLine -> updateEntity(orderLineDto, existingOrderLine))
                 .map(updatedOrderLine -> orderLineRepository.save(updatedOrderLine))
                 .orElseThrow(() -> new RuntimeException("OrderLine not found"));
     }
 
-    private OrderLine updateEntity(OrderLineDto orderLineData, OrderLine existingOrderLine) {
-        existingOrderLine.setBook(orderLineData.getBook());
-        existingOrderLine.setQuantity(orderLineData.getQuantity());
+    private OrderLine updateEntity(OrderLineDto orderLineDto, OrderLine existingOrderLine) {
+        existingOrderLine.setBook(orderLineDto.getBookDto());
+        existingOrderLine.setQuantity(orderLineDto.getQuantity());
         return existingOrderLine;
     }
 
-//    public void updateNew(Product product) {
-//        log.info("update product {}", product);
-//
-//        String name = product.getName();
-//        productRepository.findByNameIgnoreCase(name)
-//                .filter(existingProduct -> existingProduct.getId().equals(product.getId()))
-//                .map(existingProduct -> productRepository.save(product))
-//                .orElseThrow(() -> {
-//                    log.error("product with name {} already exists", name);
-//                    throw new ResourceAlreadyExistsException("product with name " + name + " already exists");
-//                });
-//    }
 
     // delete
     @Transactional

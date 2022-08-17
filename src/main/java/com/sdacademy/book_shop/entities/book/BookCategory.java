@@ -1,36 +1,30 @@
 package com.sdacademy.book_shop.entities.book;
 
-public enum BookCategory {
-    LITERARY_FICTION,
-    WESTERN,
-    ROMAN,
-    FANTASY,
-    DYSTOPIAN,
-    MAGICAL_REALISM,
-    REALIST_LITERATURE,
-    POETRY,
-    DICTIONARY,
-    PHILOSOPHY,
-    PSYCHOLOGY,
-    ART,
-    ARCHITECTURE,
-    CULTURE,
-    CLASSICS,
-    COMIC,
-    COOK,
-    ESSAYS,
-    MEMOIR,
-    MYSTERY,
-    THRILLER,
-    HORROR,
-    HISTORICAL,
-    ROMANCE,
-    SCIENCE_FICTION,
-    MOTIVATION,
-    FINANCIAL,
-    ENGINEERING,
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import static lombok.AccessLevel.PRIVATE;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@FieldDefaults(level = PRIVATE)
+public class BookCategory {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+    String name;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<Book> books = new ArrayList<Book>();
 
 }

@@ -11,7 +11,7 @@ public class NotEnoughBooksInStockException extends Exception {
     }
 
     public NotEnoughBooksInStockException(Book book) {
-        super(String.format("Not enough %s products in stock. Only %d left", book.getName(), book.getQuantity()));
+        super(String.format("Not enough %s products in stock. Only %d left", book.getTitle(), book.getQuantity()));
     }
 
 }

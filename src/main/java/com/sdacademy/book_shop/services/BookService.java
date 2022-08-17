@@ -1,10 +1,8 @@
 package com.sdacademy.book_shop.services;
 
 import com.sdacademy.book_shop.dto.BookDto;
-import com.sdacademy.book_shop.dto.UserDto;
 import com.sdacademy.book_shop.entities.book.Book;
 import com.sdacademy.book_shop.entities.book.BookCategory;
-import com.sdacademy.book_shop.entities.user.User;
 import com.sdacademy.book_shop.exceptions.EntityNotFoundError;
 import com.sdacademy.book_shop.exceptions.SdException;
 import com.sdacademy.book_shop.repository.BookRepository;

@@ -127,17 +127,17 @@ public class OrderService {
 
     }
 
-    private void updateEntity(OrderDto orderData, Order existingOrder) {
-        existingOrder.setTotalPrice(orderData.getTotalPrice());
-        existingOrder.setAddress(orderData.getAddress());
-        existingOrder.setOrderDate(orderData.getOrderDate());
-        if (orderData.getEntries()!=null) {
-            existingOrder.setEntries(orderData.getEntries().stream().map(e->orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
+    private void updateEntity(OrderDto orderDto, Order existingOrder) {
+        existingOrder.setTotalPrice(orderDto.getTotalPrice());
+        existingOrder.setAddress(orderDto.getAddress());
+        existingOrder.setOrderDate(orderDto.getOrderDate());
+        if (orderDto.getEntries()!=null) {
+            existingOrder.setEntries(orderDto.getEntries().stream().map(e->orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
         }
-        if(orderData.getUser()!=null){
-            existingOrder.setUser(userMapper.convertToEntity(orderData.getUser()));
+        if(orderDto.getUser()!=null){
+            existingOrder.setUser(userMapper.convertToEntity(orderDto.getUser()));
         }
-        existingOrder.setOrderStatus(orderData.getOrderStatus());
+        existingOrder.setOrderStatus(orderDto.getOrderStatus());
     }
 
 
