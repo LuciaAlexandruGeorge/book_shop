@@ -1,17 +1,17 @@
 package com.sdacademy.book_shop.services;
 
 import com.sdacademy.book_shop.dto.OrderDto;
-import com.sdacademy.book_shop.entities.cartNoder.Order;
+import com.sdacademy.book_shop.entities.cartNoder.OrderCommand;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
 @Service
-public class OrderMapper implements Mapper<Order, OrderDto>  {
+public class OrderMapper implements Mapper<OrderCommand, OrderDto>  {
     UserMapper userMapper;
     OrderLineMapper orderLineMapper;
     @Override
-    public OrderDto convertToDto(Order entity){
+    public OrderDto convertToDto(OrderCommand entity){
         OrderDto result = new OrderDto();
         result.setId((entity.getId()));
         result.setTotalPrice(entity.getTotalPrice());
@@ -27,8 +27,8 @@ public class OrderMapper implements Mapper<Order, OrderDto>  {
     }
 
     @Override
-    public Order convertToEntity(OrderDto dto){
-        Order result = new Order();
+    public OrderCommand convertToEntity(OrderDto dto){
+        OrderCommand result = new OrderCommand();
         result.setId((dto.getId()));
         result.setTotalPrice(dto.getTotalPrice());
         result.setAddress(dto.getAddress());

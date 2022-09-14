@@ -1,6 +1,6 @@
 package com.sdacademy.book_shop.controller;
 
-import com.sdacademy.book_shop.entities.book.Book;
+import com.sdacademy.book_shop.dto.BookDto;
 import com.sdacademy.book_shop.exceptions.NotEnoughBooksInStockException;
 import com.sdacademy.book_shop.services.BookService;
 import com.sdacademy.book_shop.services.OrderService;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ShoppingCartController {
     private final OrderService orderService;
-
     private final BookService bookService;
 
     @Autowired
@@ -33,7 +32,7 @@ public class ShoppingCartController {
 
     @GetMapping("/shoppingCart/addBook/{bookId}")
     public ModelAndView addBookToCart(@PathVariable("bookId") Long bookId, @RequestParam("productQuantity") int quantity) {
-        Book book = bookService.findById(bookId);
+        BookDto book = bookService.findById(bookId);
         if (book != null) {
             orderService.addBook(book, quantity);
         }
@@ -42,7 +41,7 @@ public class ShoppingCartController {
 
     @GetMapping("/shoppingCart/removeBook/{bookId}")
     public ModelAndView removeBookFromCart(@PathVariable("bookId") Long bookId) {
-        Book book = bookService.findById(bookId);
+        BookDto book = bookService.findById(bookId);
         if (book != null) {
             orderService.removeBook(book);
         }

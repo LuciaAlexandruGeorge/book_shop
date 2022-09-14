@@ -25,12 +25,12 @@ public class BookService {
 
     static final Logger log = LoggerFactory.getLogger(BookService.class);
     BookRepository bookRepository;
-    ModelMapper modelMapper;
+//    ModelMapper modelMapper;
     BookMapper bookMapper;
 
     private List<BookDto> getBookDtos(final List<Book> books) {
         return books.stream()
-                .map(book -> modelMapper.map(book, BookDto.class))
+                .map(book -> bookMapper.convertToDto(book))
                 .collect((toList()));
     }
 
@@ -39,7 +39,7 @@ public class BookService {
         }
 
     public List<BookDto> getAllByAuthor_FirstNameOrLastName(String name){
-        return bookRepository.findAllByAuthor_FirstNameOrLastName(name,name).stream().map(book -> bookMapper.convertToDto(book)).collect(Collectors.toList());
+        return bookRepository.findAllByAuthor_FirstNameOrAuthor_LastName(name,name).stream().map(book -> bookMapper.convertToDto(book)).collect(Collectors.toList());
 
     }
 
@@ -84,13 +84,13 @@ public class BookService {
     }
 
     public BookDto getByISBN(final String ISBN) {
-        val book = bookRepository.findByISBN(ISBN).orElseThrow(() -> new SdException(ISBN + " was not found"));
-        return modelMapper.map(book, BookDto.class);
+        Book book = bookRepository.findByISBN(ISBN).orElseThrow(() -> new SdException(ISBN + " was not found"));
+        return bookMapper.convertToDto(book);
     }
 
     public BookDto getByAuthorAndISBN(final String author, final String ISBN) {
-        val book = bookRepository.findByAuthorAndISBN(author, ISBN).orElseThrow(() -> new SdException(author + " with the following ISBN: " + ISBN + " was not found"));
-        return modelMapper.map(book, BookDto.class);
+        Book book = bookRepository.findByAuthorAndISBN(author, ISBN).orElseThrow(() -> new SdException(author + " with the following ISBN: " + ISBN + " was not found"));
+        return bookMapper.convertToDto(book);
     }
 
     public List<BookDto> getTop3ByAuthorOrderByPagesNumDesc(final String author) {

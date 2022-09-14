@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" integrity="sha384-7ynz3n3tAGNUYFZD3cWe5PDcE36xj85vyFkawcF6tIwxvIecqKvfwLiaFdizhPpN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div th:replace="fragments/nav-bar :: navBar"/>
+
+<div class="d-flex flex-column justify-content-center align-items-center p-5" style="max-width: 1200px; margin: auto">
+
+    <h1>Edit user</h1>
+
+    <div>
+        <form method="post" th:action="@{/admin/users/{id}/edit(id=${user.id})}" th:object="${user}">
+
+            <div>
+                <label for="name">Username</label>
+                <input id="name" th:field="*{name}" type="text">
+            </div>
+
+            <div>
+                <label for="email">email</label>
+                <input id="email" th:field="*{email}" type="email">
+            </div>
+
+            <div>
+                <label for="password">password</label>
+                <input id="password" th:field="*{password}" type="password">
+            </div>
+
+            <div>
+                <label for="roles">role</label>
+                <input id="roles" th:field="*{roles}" type="text">
+            </div>
+
+            <div>
+                <label for="preferences">preferences</label>
+                <input id="preferences" th:field="*{preferences}" type="text">
+            </div>
+
+            <div>
+                <label for="thumbnail">thumbnail</label>
+                <input id="thumbnail" th:field="*{thumbnail}" type="text">
+            </div>
+
+
+
+            <div>
+                <a th:href="@{/admin/users}">
+                    <button class="btn btn-secondary" id="cancel" name="cancel" type="button">Cancel</button>
+                </a>
+                <button class="btn btn-primary" id="save" name="save" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+</body>
+</html>

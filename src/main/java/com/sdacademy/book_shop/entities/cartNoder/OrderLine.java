@@ -28,14 +28,14 @@ public class OrderLine {
     @JoinTable(name = "order_orderlines",
             joinColumns = @JoinColumn(name = "orderline_id"),
             inverseJoinColumns = @JoinColumn(name = "orders_id"))
-    Order order;
+    OrderCommand orderCommand;
 
      double price;
 
-    public OrderLine(int quantity, Book book, Order orders, double price) {
+    public OrderLine(int quantity, Book book, OrderCommand orderCommand, double price) {
         this.quantity = quantity;
         this.book = book;
-        this.order = orders;
+        this.orderCommand = orderCommand;
         this.price = price;
     }
 }

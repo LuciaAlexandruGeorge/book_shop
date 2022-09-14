@@ -14,5 +14,5 @@ import static lombok.AccessLevel.PRIVATE;
 public class BookCategoryDto {
     Long id;
     String name;
-    List<Book> books = new ArrayList<Book>();
+
 }

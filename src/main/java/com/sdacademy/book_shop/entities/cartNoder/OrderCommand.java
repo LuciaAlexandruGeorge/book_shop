@@ -1,5 +1,6 @@
 package com.sdacademy.book_shop.entities.cartNoder;
 
+import com.sdacademy.book_shop.entities.user.Address;
 import com.sdacademy.book_shop.entities.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,20 +19,29 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class Order {
+public class OrderCommand {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
     double totalPrice;
-    String address;
+
+    @ManyToOne()
+    @JoinTable(name ="order_addresses",
+            joinColumns = @JoinColumn(name="order_id"),
+            inverseJoinColumns = @JoinColumn(name="address_id") )
+    Address address;
+
     Date orderDate;
-    @OneToMany(mappedBy = "orders")
+
+    @OneToMany(mappedBy = "orderCommand")
     List<OrderLine> entries = new ArrayList<OrderLine>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_orders",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     User user;
+
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
 }

@@ -15,7 +15,7 @@ public class UserMapper implements Mapper<User, UserDto> {
         UserDto result = new UserDto();
         result.setId(entity.getId());
         result.setName(entity.getName());
-        result.setOrderList(entity.getOrderList());
+        result.setOrderCommandList(entity.getOrderCommandList());
         result.setEmail(entity.getEmail());
         result.setPassword(entity.getPassword());
         result.setAddress(entity.getAddress());
@@ -30,7 +30,7 @@ public class UserMapper implements Mapper<User, UserDto> {
             result=userRepository.findById(dto.getId()).orElse(result);
         }
         result.setName(dto.getName());
-        result.setOrderList(dto.getOrderList());
+        result.setOrderCommandList(dto.getOrderCommandList());
         result.setEmail(dto.getEmail());
         result.setPassword(dto.getPassword());
         result.setAddress(dto.getAddress());

@@ -45,20 +45,17 @@ public class BookCategoryService {
     }
 
     // update
-    public void update(Long productCategoryId, BookCategoryDto productCategoryDto) {
-        log.info("update product {}", productCategoryDto);
+    public void update(Long id, BookCategoryDto bookCategoryDto) {
+        log.info("update product {}", bookCategoryDto);
+        BookCategory existingBookCategory=bookCategoryRepository.findById(id).orElseThrow(() -> new RuntimeException("product category not found"));
+        existingBookCategory.setName(bookCategoryDto.getName());
 
-        bookCategoryRepository.findById(productCategoryId)
-                .map(existingProductCategory -> updateEntity(productCategoryDto, existingProductCategory))
-                .map(updatedProductCategory -> bookCategoryRepository.save(updatedProductCategory))
-                .orElseThrow(() -> new RuntimeException("product category not found"));
+        bookCategoryRepository.save(existingBookCategory);
+
+
     }
 
-    private BookCategory updateEntity(BookCategoryDto productCategoryDto, BookCategory existingProductCategory) {
-        existingProductCategory.setName(productCategoryDto.getName());
-        existingProductCategory.setBooks((List<Book>) productCategoryDto.getBooks());
-        return existingProductCategory;
-    }
+
 
     public void updateNew(BookCategory bookCategory) {
         log.info("update product category {}", bookCategory);

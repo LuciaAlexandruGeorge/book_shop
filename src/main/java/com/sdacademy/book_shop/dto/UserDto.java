@@ -1,6 +1,6 @@
 package com.sdacademy.book_shop.dto;
 
-import com.sdacademy.book_shop.entities.cartNoder.Order;
+import com.sdacademy.book_shop.entities.cartNoder.OrderCommand;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +15,7 @@ public class UserDto {
      Long id;
      String name;
      String email;
-     List<Order> orderList;
+     List<OrderCommand> orderCommandList;
      String password;
      String address;
      String thumbnail;

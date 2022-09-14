@@ -15,6 +15,8 @@ public class OrderLineService {
     private OrderLineRepository orderLineRepository;
     @Autowired
     private OrderLineMapper orderLineMapper;
+    @Autowired
+    private BookMapper bookMapper;
 
 
     private static final Logger log = LoggerFactory.getLogger(OrderLineService.class);
@@ -27,7 +29,7 @@ public class OrderLineService {
     // create
     public OrderLineDto save(OrderLineDto orderLine) {
         log.info("saving order line {}", orderLine.getId());
-        OrderLine orderLineEntity= orderLineMapper.convertToEntity(orderLine);
+        OrderLine orderLineEntity = orderLineMapper.convertToEntity(orderLine);
         orderLineRepository.save(orderLineEntity);
         return orderLineMapper.convertToDto(orderLineEntity);
     }
@@ -51,7 +53,7 @@ public class OrderLineService {
     }
 
     private OrderLine updateEntity(OrderLineDto orderLineDto, OrderLine existingOrderLine) {
-        existingOrderLine.setBook(orderLineDto.getBookDto());
+        existingOrderLine.setBook(bookMapper.convertToEntity(orderLineDto.getBookDto()));
         existingOrderLine.setQuantity(orderLineDto.getQuantity());
         return existingOrderLine;
     }

@@ -12,7 +12,7 @@ public class BookCategoryMapper {
         BookCategoryDto result = new BookCategoryDto();
         result.setId(entity.getId());
         result.setName(entity.getName());
-        result.setBooks(entity.getBooks());
+
         return result;
     }
 
@@ -21,7 +21,7 @@ public class BookCategoryMapper {
         BookCategory result = new BookCategory();
         result.setId(dto.getId());
         result.setName(dto.getName());
-        result.setBooks(dto.getBooks());
+
         return result;
     }
 }

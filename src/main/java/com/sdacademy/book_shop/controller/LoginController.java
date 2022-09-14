@@ -1,5 +1,6 @@
 package com.sdacademy.book_shop.controller;
 
+import com.sdacademy.book_shop.dto.UserDto;
 import com.sdacademy.book_shop.entities.user.User;
 import com.sdacademy.book_shop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,28 +14,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
-    public LoginController(UserService UserService) {
-        this.userService = userService;
-    }
+    public LoginController(UserService userService) {this.userService = userService;}
 
     @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
-    }
+    public String showLoginForm() {return "login_page";}
 
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
-        User newUser = new User();
+        UserDto newUser = new UserDto();
         model.addAttribute("user", newUser);
-        return "register";
+        return "register_page";
     }
 
     @PostMapping("/register")
-    public String add(@ModelAttribute User user) {
-        userService.save(user);
+    public String add(@ModelAttribute UserDto userDto) {
+        userService.save(userDto);
         return "redirect:/";
     }
 }

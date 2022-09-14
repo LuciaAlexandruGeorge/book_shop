@@ -18,11 +18,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
         auth.setUserDetailsService(userService);
-        auth.setPasswordEncoder(passwordEncoder());
+        auth.setPasswordEncoder(passwordEncoder);
         return auth;
     }
     // permiti accesul la resurse, definesti form login
@@ -32,13 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/", "/index", "/menu/**", "/register", "/login").permitAll()
                 .antMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
-                .antMatchers("/admin/**", "/products/**", "/product-categories/**").hasAnyRole("ADMIN")
+                .antMatchers("/admin/**", "/books/**", "/book-categories/**").hasAnyRole("ADMIN")
                 .antMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/shoppingCart/checkout").authenticated()
                 .antMatchers("/shoppingCart/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
+
         // custom form (nice to have)
-        http.formLogin().loginPage("/login").loginProcessingUrl("/login");
+        http.formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll();
         // custom logout
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -53,8 +57,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/static/**", "/webjars/**");
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }

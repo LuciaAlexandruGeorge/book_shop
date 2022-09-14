@@ -24,7 +24,5 @@ public class BookCategory {
     Long id;
     String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    List<Book> books = new ArrayList<Book>();
 
 }

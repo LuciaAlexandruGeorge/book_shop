@@ -18,6 +18,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = AUTO)
     Long id;
+    @ManyToOne
     BookCategory bookCategory;
     String title;
     @ManyToOne
@@ -28,5 +29,4 @@ public class Book {
     private String description;
     private String thumbnail;
     private int quantity;
-
 }

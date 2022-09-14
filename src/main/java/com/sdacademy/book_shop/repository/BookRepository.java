@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    List<Book> findAllByAuthor_FirstNameOrLastName(String authorFirstName, String authorLastName);
+//    List<Book> findAllByAuthor_FirstNameOrLastName(String authorFirstName, String authorLastName);
+    List<Book> findAllByAuthor_FirstNameOrAuthor_LastName(String authorFirstName, String authorLastName);
 
     List<Book> findAllByTitleIgnoreCase(String title);
 

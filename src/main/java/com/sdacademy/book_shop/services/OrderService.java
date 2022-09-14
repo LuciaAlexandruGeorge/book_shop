@@ -1,8 +1,9 @@
 package com.sdacademy.book_shop.services;
 
+import com.sdacademy.book_shop.dto.BookDto;
 import com.sdacademy.book_shop.dto.OrderDto;
 import com.sdacademy.book_shop.entities.book.Book;
-import com.sdacademy.book_shop.entities.cartNoder.Order;
+import com.sdacademy.book_shop.entities.cartNoder.OrderCommand;
 import com.sdacademy.book_shop.exceptions.NotEnoughBooksInStockException;
 import com.sdacademy.book_shop.repository.BookRepository;
 import com.sdacademy.book_shop.repository.OrderRepository;
@@ -37,18 +38,18 @@ public class OrderService {
     @Autowired
     private OrderLineMapper orderLineMapper;
 
-    private Map<Book, Integer> books = new HashMap<>();
+    private Map<BookDto, Integer> books = new HashMap<>();
 
 
-    public void addBook(Book book, int quantity) {
+    public void addBook(BookDto book, int quantity) {
         if (books.containsKey(book)) {
-            books.replace(book, book.get(book) + quantity);
+            books.replace(book, books.get(book) + quantity);
         } else {
             books.put(book, quantity);
         }
     }
 
-    public void removeBook(Book book) {
+    public void removeBook(BookDto book) {
         if (books.containsKey(book)) {
             if (books.get(book) > 1)
                 books.replace(book, books.get(book) - 1);
@@ -58,9 +59,7 @@ public class OrderService {
         }
     }
 
-    ;
-
-    public Map<Book, Integer> getProductsInCart() {
+    public Map<BookDto, Integer> getProductsInCart() {
         return Collections.unmodifiableMap(books);
     }
 
@@ -68,20 +67,21 @@ public class OrderService {
     //TODO creaza legatura user - order
     public void checkout() throws NotEnoughBooksInStockException {
         Book book;
-        for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+        for (Map.Entry<BookDto, Integer> entry : books.entrySet()) {
             Long productKey = entry.getKey().getId();
             // Refresh quantity for every book before checking
             book = bookRepository.findById(productKey).orElseThrow();
 
-            if (book.getQuantity() < entry.getValue())
+            if (book.getQuantity() < entry.getValue()) {
                 throw new NotEnoughBooksInStockException(book);
+            }
 
-            entry.getKey().setQuantity(book.getQuantity() - entry.getValue());
+            book.setQuantity(book.getQuantity() - entry.getValue());
 
-            bookRepository.save(entry.getKey());
+            bookRepository.save(book);
         }
 
-//        bookRepository.save(books.keySet());
+
         bookRepository.flush();
         books.clear();
     }
@@ -98,9 +98,9 @@ public class OrderService {
     // create
     public OrderDto save(OrderDto order) {
         log.info("saving order {}", order.getId());
-        Order orderEntity = orderMapper.convertToEntity(order);
-        orderRepository.save(orderEntity);
-        return orderMapper.convertToDto(orderEntity);
+        OrderCommand orderCommandEntity = orderMapper.convertToEntity(order);
+        orderRepository.save(orderCommandEntity);
+        return orderMapper.convertToDto(orderCommandEntity);
     }
 
     // find all
@@ -112,7 +112,7 @@ public class OrderService {
     // find by id
     public OrderDto findById(Long id) {
         log.info("finding by id");
-        Order entity = orderRepository.findById(id)
+        OrderCommand entity = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         return orderMapper.convertToDto(entity);
     }
@@ -120,23 +120,23 @@ public class OrderService {
     // update
     public void update(Long orderId, OrderDto orderDto) {
         log.info("update Order {}", orderDto.getEntries().toString());
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
-        updateEntity(orderDto, order);
-        orderRepository.save(order);
+        OrderCommand orderCommand = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        updateEntity(orderDto, orderCommand);
+        orderRepository.save(orderCommand);
 
     }
 
-    private void updateEntity(OrderDto orderDto, Order existingOrder) {
-        existingOrder.setTotalPrice(orderDto.getTotalPrice());
-        existingOrder.setAddress(orderDto.getAddress());
-        existingOrder.setOrderDate(orderDto.getOrderDate());
+    private void updateEntity(OrderDto orderDto, OrderCommand existingOrderCommand) {
+        existingOrderCommand.setTotalPrice(orderDto.getTotalPrice());
+        existingOrderCommand.setAddress(orderDto.getAddress());
+        existingOrderCommand.setOrderDate(orderDto.getOrderDate());
         if (orderDto.getEntries() != null) {
-            existingOrder.setEntries(orderDto.getEntries().stream().map(e -> orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
+            existingOrderCommand.setEntries(orderDto.getEntries().stream().map(e -> orderLineMapper.convertToEntity(e)).collect(Collectors.toList()));
         }
         if (orderDto.getUser() != null) {
-            existingOrder.setUser(userMapper.convertToEntity(orderDto.getUser()));
+            existingOrderCommand.setUser(userMapper.convertToEntity(orderDto.getUser()));
         }
-        existingOrder.setOrderStatus(orderDto.getOrderStatus());
+        existingOrderCommand.setOrderStatus(orderDto.getOrderStatus());
     }
 
 

@@ -4,7 +4,9 @@ import com.sdacademy.book_shop.dto.UserDto;
 import com.sdacademy.book_shop.entities.user.User;
 import com.sdacademy.book_shop.exceptions.ResourceAlreadyExistsException;
 import com.sdacademy.book_shop.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,27 +25,25 @@ import java.util.List;
 import static lombok.AccessLevel.PRIVATE;
 
 @FieldDefaults(level = PRIVATE)
+@Slf4j
+@AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
-    static final Logger log = LoggerFactory.getLogger(UserService.class);
     UserMapper userMapper;
-    final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+
 
     //Used by Spring Security to identify and pass and UserDetails to its classes
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmailIgnoreCase(email);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Invalid email or password.");
         }
         List roles = new ArrayList();
         String role = "ROLE_" + user.getRoles();
@@ -88,7 +89,7 @@ public class UserService implements UserDetailsService {
 
     private User updateEntity(UserDto userDto, User existingUser) {
         existingUser.setName(userDto.getName());
-        existingUser.setOrderList(userDto.getOrderList());
+        existingUser.setOrderCommandList(userDto.getOrderCommandList());
         existingUser.setEmail(userDto.getEmail());
         existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         existingUser.setAddress(userDto.getAddress());
