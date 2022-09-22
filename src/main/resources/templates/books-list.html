@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Books Page</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css} "/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.1.2/css/all.css}">
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navBar"/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="input-group rounded btn">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="btn">
+                <a class="btn btn-primary" th:href="@{/books/add}" sec:authorize="hasRole('ADMIN')" id="addJob">Add Book</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card-columns">
+        <div class="card" th:each="book : ${booksInView}">
+            <img class="card-img-top" th:src="*{'data:image/jpeg;base64, ' + book.image}" alt="Book Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${book.title}"></h5>
+                <h3 class="card-text" th:text="${book.category}"></h3>
+                <p class="card-text" th:text="${book.description}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

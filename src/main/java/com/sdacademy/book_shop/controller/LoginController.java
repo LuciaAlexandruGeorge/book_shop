@@ -26,7 +26,7 @@ public class LoginController {
     public String showRegisterPage(Model model) {
         UserDto newUser = new UserDto();
         model.addAttribute("user", newUser);
-        return "register_page";
+        return "register-page";
     }
 
     @PostMapping("/register")

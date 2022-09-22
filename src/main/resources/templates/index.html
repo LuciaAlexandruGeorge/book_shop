@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Books</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css} "/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.6.1/font/bootstrap-icons.css}"/>
+</head>
+
+<body>
+
+<div th:replace="fragments/nav-bar :: navBar"/>
+
+<div class="d-flex flex-column justify-content-center align-items-center p-5" style="max-width: 1200px; margin: auto">
+
+    <h1>Book list</h1>
+
+    <a th:href="@{/admin/books/add}" class="btn btn-dark m-5">Create book</a>
+
+    <table class="table table-hover table-border ">
+        <!-- table header -->
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">Book ID</th>
+            <th scope="col" class="text-center">Category</th>
+            <th scope="col" class="text-center">Title</th>
+            <th scope="col" class="text-center">Author</th>
+            <th scope="col" class="text-center">ISBN</th>
+            <th scope="col" class="text-center">NumOfPages</th>
+            <th scope="col" class="text-center">Price</th>
+            <th scope="col" class="text-center">Description</th>
+            <th scope="col" class="text-center">Thumbnail</th>
+            <th scope="col" class="text-center">Quantity</th>
+        </tr>
+        </thead>
+
+        <!-- table body -->
+        <tbody>
+
+        <!-- product entry -->
+        <tr th:each="book : ${booksInView}" scope="row">
+            <td th:text="${book.id}" class="text-center">1</td>
+            <td th:text="${book.title}" class="text-center">test</td>
+            <td th:text="${book.price}" class="text-center">2</td>
+            <td th:text="${book.description}" class="text-center">Roman</td>
+            <td th:text="${book.quantity}" class="text-center">2</td>
+            <td>
+                <img th:src="${book.thumbnail}" class="mx-3 my-5"  th:alt="${book.title}"
+                     style="max-width: 100px;">
+            </td>
+            <td th:if="${book.category} == null" class="text-center"></td>
+            <td th:unless="${book.category} == null" th:text="${book.category.title}"></td>
+            <!-- action buttons -->
+            <td><a th:href="@{/admin/books/{id}/edit(id = ${book.id})}" class="btn btn-primary">Edit</a></td>
+            <td><a th:href="@{/admin/books/{id}/delete(id = ${book.id})}" class="btn btn-secondary">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+
+</html>

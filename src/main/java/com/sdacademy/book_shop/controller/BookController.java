@@ -18,23 +18,23 @@ import java.util.List;
 public class BookController {
     public static final String BASE_URL = "/api/books";
     private final BookService bookService;
-    @GetMapping("")
+    @GetMapping("/books")
     public String showBooks(Model model) {
         List<BookDto> books = bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "books";
+        return "books-list";
     }
 
     @GetMapping("/create")
     public String showForm(Model model) {
         model.addAttribute("bookForm", new BookDto());
-        return "book_create";
+        return "book-create";
     }
 
     @PostMapping("/create")
     public String createBook(@ModelAttribute("bookForm") @Valid BookDto form, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            return "book_create";
+            return "book-create";
         }
         bookService.createBook(form);
         return "redirect:/books";
